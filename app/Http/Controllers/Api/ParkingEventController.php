@@ -85,5 +85,8 @@ class ParkingEventController extends Controller
             return self::error("Failed to register parking event!", $e->getMessage(), 500);
         }
     }
+
+  
+
     
 }

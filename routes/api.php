@@ -21,4 +21,6 @@ Route::get('/user', function (Request $request) {
 // Route::apiResource('vehicles', VehicleController::class);
 
 Route::post('/parking-events', [ParkingEventController::class, 'store']);
+Route::get('/parking/status', [ParkingSpaceController::class, 'getParkingStatus']);
+
 
