@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id(); // BIGINT (PK) Auto-increment
-            $table->foreignId('parking_event_id')->constrained('parking_events')->onDelete('cascade'); // Foreign key reference
+            // $table->foreignId('parking_event_id')->constrained('parking_events')->onDelete('cascade'); // Foreign key reference
             $table->string('license_plate', 15); // License Plate
             $table->string('plate_color', 20); // Plate color
             $table->string('vehicle_type', 20); // Type (Car, Bike, etc.)
