@@ -14,9 +14,11 @@ Route::get('/user', function (Request $request) {
 
 
 
-Route::apiResource('parking-levels', ParkingLevelController::class);
-Route::apiResource('parking-spaces', ParkingSpaceController::class);
-Route::apiResource('devices', DeviceController::class);
-Route::apiResource('parking-events', ParkingEventController::class);
-Route::apiResource('vehicles', VehicleController::class);
+// Route::apiResource('parking-levels', ParkingLevelController::class);
+// Route::apiResource('parking-spaces', ParkingSpaceController::class);
+// Route::apiResource('devices', DeviceController::class);
+// Route::apiResource('parking-events', ParkingEventController::class);
+// Route::apiResource('vehicles', VehicleController::class);
+
+Route::post('/parking-events', [ParkingEventController::class, 'store']);
 

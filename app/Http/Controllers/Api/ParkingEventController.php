@@ -3,67 +3,87 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ParkingEvent;
 use Illuminate\Http\Request;
+use App\Models\ParkingEvent;
+use App\Models\ParkingSpace;
+use App\Models\Device;
+use App\Models\Vehicle;
+use Carbon\Carbon;
+use App\Traits\ResponseAPI; // <-- Import the trait
 
 class ParkingEventController extends Controller
 {
-    // List all parking events with related device, space and vehicle
-    public function index()
-    {
-        return response()->json(ParkingEvent::with(['device', 'space', 'vehicle'])->get());
-    }
+    use ResponseAPI; // <-- Use the trait
 
-    // Create a new parking event
     public function store(Request $request)
     {
-        $request->validate([
-            'device_id'      => 'required|exists:devices,id',
-            'space_id'       => 'required|exists:parking_spaces,id',
-            'event_time'     => 'required|date',
-            'report_type'    => 'required|string',
-            'occupancy'      => 'required|boolean',
-            'duration'       => 'nullable|integer',
-            'coordinate_x1'  => 'nullable|integer',
-            'coordinate_y1'  => 'nullable|integer',
-            'coordinate_x2'  => 'nullable|integer',
-            'coordinate_y2'  => 'nullable|integer'
-        ]);
-
-        $event = ParkingEvent::create($request->all());
-        return response()->json($event, 201);
+        try {
+            // Validate the incoming request
+            $validated = $request->validate([
+                'device_id'       => 'required|exists:devices,id',
+                'space_id'        => 'required|exists:parking_spaces,id',
+                'event_time'      => 'required|date',
+                'report_type'     => 'required|string',
+                'occupancy'       => 'required|boolean',
+                'duration'        => 'nullable|integer',
+                'coordinate_x1'   => 'nullable|integer',
+                'coordinate_y1'   => 'nullable|integer',
+                'coordinate_x2'   => 'nullable|integer',
+                'coordinate_y2'   => 'nullable|integer',
+                'license_plate'   => 'nullable|string|max:15',
+                'plate_color'     => 'nullable|string|max:20',
+                'vehicle_type'    => 'nullable|string|max:20',
+                'vehicle_color'   => 'nullable|string|max:20',
+                'vehicle_brand'   => 'nullable|string|max:50',
+            ]);
+    
+            // Find the parking space
+            $parkingSpace = ParkingSpace::findOrFail($validated['space_id']);
+    
+            // Check if the parking space is already occupied
+            if ($parkingSpace->status === 'occupied' && $validated['occupancy']) {
+                return self::error("Parking space is already occupied!", null, 400);
+            }
+    
+            // Register the parking event
+            $parkingEvent = ParkingEvent::create([
+                'device_id'     => $validated['device_id'],
+                'space_id'      => $validated['space_id'],
+                'event_time'    => Carbon::parse($validated['event_time']),
+                'report_type'   => $validated['report_type'],
+                'occupancy'     => $validated['occupancy'],
+                'duration'      => $validated['duration'] ?? 0,
+                'coordinate_x1' => $validated['coordinate_x1'] ?? null,
+                'coordinate_y1' => $validated['coordinate_y1'] ?? null,
+                'coordinate_x2' => $validated['coordinate_x2'] ?? null,
+                'coordinate_y2' => $validated['coordinate_y2'] ?? null,
+            ]);
+    
+            // Update parking space status
+            $parkingSpace->status = $validated['occupancy'] ? 'occupied' : 'vacant';
+            $parkingSpace->save();
+    
+            // If a vehicle is detected, register it
+            if (!empty($validated['license_plate'])) {
+                $vehicle = Vehicle::firstOrCreate(
+                    ['license_plate' => $validated['license_plate']], 
+                    [
+                        'plate_color'      => $validated['plate_color'] ?? 'Unknown',
+                        'vehicle_type'     => $validated['vehicle_type'] ?? 'Unknown',
+                        'vehicle_color'    => $validated['vehicle_color'] ?? 'Unknown',
+                        'vehicle_brand'    => $validated['vehicle_brand'] ?? null,
+                    ]
+                );
+    
+                // Link vehicle to parking event
+                $parkingEvent->update(['vehicle_id' => $vehicle->id]);
+            }
+    
+            return self::success("Parking event registered successfully!", $parkingEvent, 201);
+    
+        } catch (\Exception $e) {
+            return self::error("Failed to register parking event!", $e->getMessage(), 500);
+        }
     }
-
-    // Show a specific parking event
-    public function show(ParkingEvent $parkingEvent)
-    {
-        return response()->json($parkingEvent->load(['device', 'space', 'vehicle']));
-    }
-
-    // Update a parking event
-    public function update(Request $request, ParkingEvent $parkingEvent)
-    {
-        $request->validate([
-            'device_id'      => 'exists:devices,id',
-            'space_id'       => 'exists:parking_spaces,id',
-            'event_time'     => 'date',
-            'report_type'    => 'string',
-            'occupancy'      => 'boolean',
-            'duration'       => 'nullable|integer',
-            'coordinate_x1'  => 'nullable|integer',
-            'coordinate_y1'  => 'nullable|integer',
-            'coordinate_x2'  => 'nullable|integer',
-            'coordinate_y2'  => 'nullable|integer'
-        ]);
-
-        $parkingEvent->update($request->all());
-        return response()->json($parkingEvent);
-    }
-
-    // Delete a parking event
-    public function destroy(ParkingEvent $parkingEvent)
-    {
-        $parkingEvent->delete();
-        return response()->json(null, 204);
-    }
+    
 }
