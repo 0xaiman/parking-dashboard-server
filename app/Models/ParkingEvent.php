@@ -3,15 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use ParkingSpace;
 
 class ParkingEvent extends Model
 {
-    protected $fillable = [
-        'device_id', 'space_id', 'event_time', 'report_type',
-        'occupancy', 'duration', 'coordinate_x1', 'coordinate_y1',
-        'coordinate_x2', 'coordinate_y2'
-    ];
+    protected $guarded = [];
 
     public function device()
     {

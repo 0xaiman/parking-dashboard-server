@@ -4,15 +4,24 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
+use App\Traits\ResponseAPI;
 use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
+    use ResponseAPI;
     // List all vehicles with associated parking event
-    public function index()
-    {
-        return response()->json(Vehicle::with('event')->get());
+    public function getAllVehicles()
+{
+    try {
+        // Retrieve all vehicles
+        $vehicles = Vehicle::all();
+
+        return ResponseAPI::success("Vehicle data retrieved successfully!", $vehicles);
+    } catch (\Exception $e) {
+        return ResponseAPI::error("Failed to retrieve vehicle data!", $e->getMessage(), 500);
     }
+}
 
     // Create a new vehicle record linked to a parking event
     public function store(Request $request)

@@ -13,27 +13,51 @@ END_TIME = datetime.strptime("2025-03-23 22:00:00", "%Y-%m-%d %H:%M:%S")
 
 # Sample vehicles (20 unique cars)
 VEHICLES = [
-    {"license_plate": "ABC123", "plate_color": "Black", "vehicle_color": "Gray", "vehicle_brand": "Toyota"},
-    {"license_plate": "XYZ789", "plate_color": "White", "vehicle_color": "Blue", "vehicle_brand": "Honda"},
-    {"license_plate": "LMN456", "plate_color": "Red", "vehicle_color": "Red", "vehicle_brand": "Ford"},
-    {"license_plate": "JKL987", "plate_color": "Blue", "vehicle_color": "Black", "vehicle_brand": "BMW"},
-    {"license_plate": "GHI321", "plate_color": "Black", "vehicle_color": "White", "vehicle_brand": "Nissan"},
-    {"license_plate": "PQR654", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Mazda"},
-    {"license_plate": "DEF111", "plate_color": "Silver", "vehicle_color": "Silver", "vehicle_brand": "Tesla"},
-    {"license_plate": "UVW222", "plate_color": "Yellow", "vehicle_color": "Yellow", "vehicle_brand": "Mercedes"},
-    {"license_plate": "STU333", "plate_color": "Green", "vehicle_color": "Green", "vehicle_brand": "Subaru"},
-    {"license_plate": "QAZ444", "plate_color": "Brown", "vehicle_color": "Brown", "vehicle_brand": "Hyundai"},
-    {"license_plate": "WSX555", "plate_color": "White", "vehicle_color": "White", "vehicle_brand": "Audi"},
-    {"license_plate": "EDC666", "plate_color": "Blue", "vehicle_color": "Blue", "vehicle_brand": "Volkswagen"},
-    {"license_plate": "RFV777", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Chevrolet"},
-    {"license_plate": "TGB888", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Kia"},
-    {"license_plate": "YHN999", "plate_color": "Red", "vehicle_color": "Red", "vehicle_brand": "Lexus"},
-    {"license_plate": "UJM000", "plate_color": "Silver", "vehicle_color": "Silver", "vehicle_brand": "Infiniti"},
-    {"license_plate": "IKJ111", "plate_color": "White", "vehicle_color": "White", "vehicle_brand": "Acura"},
-    {"license_plate": "OLP222", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Jaguar"},
-    {"license_plate": "ZXM333", "plate_color": "Blue", "vehicle_color": "Blue", "vehicle_brand": "Porsche"},
-    {"license_plate": "CVB444", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Mitsubishi"}
+    {"license_plate": "ABC123", "plate_color": "Black", "vehicle_color": "Gray", "vehicle_brand": "Toyota", "owner": "John Doe", "membership_status": "member"},
+    {"license_plate": "XYZ789", "plate_color": "White", "vehicle_color": "Blue", "vehicle_brand": "Honda", "owner": "Jane Smith", "membership_status": "guest"},
+    {"license_plate": "LMN456", "plate_color": "Red", "vehicle_color": "Red", "vehicle_brand": "Perodua", "owner": "Alice Johnson", "membership_status": "member"},
+    {"license_plate": "JKL987", "plate_color": "Blue", "vehicle_color": "Black", "vehicle_brand": "Proton", "owner": "Robert Brown", "membership_status": "staff"},
+    {"license_plate": "GHI321", "plate_color": "Black", "vehicle_color": "White", "vehicle_brand": "Nissan", "owner": "Emily Davis", "membership_status": "guest"},
+    {"license_plate": "PQR654", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Mazda", "owner": "Michael Wilson", "membership_status": "member"},
+    {"license_plate": "DEF111", "plate_color": "Silver", "vehicle_color": "Silver", "vehicle_brand": "Toyota", "owner": "Sophia Martinez", "membership_status": "staff"},
+    {"license_plate": "UVW222", "plate_color": "Yellow", "vehicle_color": "Yellow", "vehicle_brand": "Perodua", "owner": "James Anderson", "membership_status": "member"},
+    {"license_plate": "STU333", "plate_color": "Green", "vehicle_color": "Green", "vehicle_brand": "Proton", "owner": "Olivia Taylor", "membership_status": "guest"},
+    {"license_plate": "QAZ444", "plate_color": "Brown", "vehicle_color": "Brown", "vehicle_brand": "Produa", "owner": "Liam Thomas", "membership_status": "member"},
+    {"license_plate": "WSX555", "plate_color": "White", "vehicle_color": "White", "vehicle_brand": "Proton", "owner": "Ava White", "membership_status": "staff"},
+    {"license_plate": "EDC666", "plate_color": "Blue", "vehicle_color": "Blue", "vehicle_brand": "Perodua", "owner": "Noah Harris", "membership_status": "guest"},
+    {"license_plate": "RFV777", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Perodua", "owner": "Mia Clark", "membership_status": "member"},
+    {"license_plate": "TGB888", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Proton", "owner": "William Hall", "membership_status": "guest"},
+    {"license_plate": "YHN999", "plate_color": "Red", "vehicle_color": "Red", "vehicle_brand": "Proton", "owner": "Emma Allen", "membership_status": "staff"},
+    {"license_plate": "UJM000", "plate_color": "Silver", "vehicle_color": "Silver", "vehicle_brand": "Proton", "owner": "Lucas Young", "membership_status": "member"},
+    {"license_plate": "IKJ111", "plate_color": "White", "vehicle_color": "White", "vehicle_brand": "Proton", "owner": "Charlotte King", "membership_status": "guest"},
+    {"license_plate": "OLP222", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Proton", "owner": "Benjamin Scott", "membership_status": "staff"},
+    {"license_plate": "ZXM333", "plate_color": "Blue", "vehicle_color": "Blue", "vehicle_brand": "Porsche", "owner": "Harper Green", "membership_status": "member"},
+    {"license_plate": "CVB444", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Perodua", "owner": "Ethan Adams", "membership_status": "guest"},
+        {"license_plate": "IKJ111", "plate_color": "White", "vehicle_color": "White", "vehicle_brand": "Proton", "owner": "Charlotte King", "membership_status": "guest"},
+    {"license_plate": "OLP222", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Proton", "owner": "Benjamin Scott", "membership_status": "staff"},
+    {"license_plate": "ZXM333", "plate_color": "Blue", "vehicle_color": "Blue", "vehicle_brand": "Porsche", "owner": "Harper Green", "membership_status": "member"},
+    {"license_plate": "CVB444", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Perodua", "owner": "Ethan Adams", "membership_status": "guest"},
+    
+    {"license_plate": "WXY555", "plate_color": "White", "vehicle_color": "White", "vehicle_brand": "Perodua", "owner": "Aiman Malik", "membership_status": "member"},
+    {"license_plate": "LMN666", "plate_color": "Silver", "vehicle_color": "Silver", "vehicle_brand": "Proton", "owner": "Farhan Rosli", "membership_status": "guest"},
+    {"license_plate": "BVC777", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Toyota", "owner": "Nur Aisyah", "membership_status": "member"},
+    {"license_plate": "HGF888", "plate_color": "Red", "vehicle_color": "Red", "vehicle_brand": "Honda", "owner": "Muhammad Hafiz", "membership_status": "staff"},
+    {"license_plate": "POI999", "plate_color": "Blue", "vehicle_color": "Blue", "vehicle_brand": "Proton", "owner": "Syafiq Rahman", "membership_status": "guest"},
+    {"license_plate": "TRE101", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Mazda", "owner": "Siti Norfaezah", "membership_status": "guest"},
+    
+    {"license_plate": "XYZ202", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Perodua", "owner": "Ahmad Fadhil", "membership_status": "member"},
+    {"license_plate": "ABC303", "plate_color": "White", "vehicle_color": "White", "vehicle_brand": "Proton", "owner": "Nur Ain", "membership_status": "staff"},
+    {"license_plate": "JKL404", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Toyota", "owner": "Hanafi Bakar", "membership_status": "guest"},
+    {"license_plate": "QWE505", "plate_color": "Silver", "vehicle_color": "Silver", "vehicle_brand": "Nissan", "owner": "Adli Azlan", "membership_status": "member"},
+    {"license_plate": "RTY606", "plate_color": "Blue", "vehicle_color": "Blue", "vehicle_brand": "Honda", "owner": "Zaid Abdul", "membership_status": "guest"},
+    {"license_plate": "UOP707", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Perodua", "owner": "Nor Shafiq", "membership_status": "staff"},
+    
+    {"license_plate": "VBN808", "plate_color": "White", "vehicle_color": "White", "vehicle_brand": "Mazda", "owner": "Siti Ameerah", "membership_status": "guest"},
+    {"license_plate": "ZXC909", "plate_color": "Gray", "vehicle_color": "Gray", "vehicle_brand": "Proton", "owner": "Faris Dani", "membership_status": "member"},
+    {"license_plate": "MNB111", "plate_color": "Silver", "vehicle_color": "Silver", "vehicle_brand": "Toyota", "owner": "Aida Sofea", "membership_status": "staff"},
+    {"license_plate": "LKJ222", "plate_color": "Black", "vehicle_color": "Black", "vehicle_brand": "Nissan", "owner": "Izwan Hakim", "membership_status": "guest"}
 ]
+
 
 # Active parking spaces to track occupied ones
 active_parking = {}
@@ -66,7 +90,9 @@ while current_time < END_TIME:
             "plate_color": vehicle["plate_color"],
             "vehicle_type": "Car",
             "vehicle_color": vehicle["vehicle_color"],
-            "vehicle_brand": vehicle["vehicle_brand"]
+            "vehicle_brand": vehicle["vehicle_brand"],
+            "owner": vehicle["owner"],
+            "membership_status": vehicle["membership_status"]
         }
 
         response = requests.post(API_URL, json=payload)

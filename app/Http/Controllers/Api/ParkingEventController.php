@@ -15,26 +15,36 @@ class ParkingEventController extends Controller
 {
     use ResponseAPI; // <-- Use the trait
 
+    public function index(Request $request)
+    {
+        $perPage = $request->query('per_page', 10);
+        $parkingEvents = ParkingEvent::paginate($perPage);
+
+        return $this->success("Parking events retrieved successfully", $parkingEvents);
+    }
+
     public function store(Request $request)
     {
         try {
             // Validate the incoming request
             $validated = $request->validate([
-                'device_id'       => 'required|exists:devices,id',
-                'space_id'        => 'required|exists:parking_spaces,id',
-                'event_time'      => 'required|date',
-                'report_type'     => 'required|string',
-                'occupancy'       => 'required|boolean',
-                'duration'        => 'nullable|integer',
-                'coordinate_x1'   => 'nullable|integer',
-                'coordinate_y1'   => 'nullable|integer',
-                'coordinate_x2'   => 'nullable|integer',
-                'coordinate_y2'   => 'nullable|integer',
-                'license_plate'   => 'nullable|string|max:15',
-                'plate_color'     => 'nullable|string|max:20',
-                'vehicle_type'    => 'nullable|string|max:20',
-                'vehicle_color'   => 'nullable|string|max:20',
-                'vehicle_brand'   => 'nullable|string|max:50',
+                'device_id'        => 'required|exists:devices,id',
+                'space_id'         => 'required|exists:parking_spaces,id',
+                'event_time'       => 'required|date',
+                'report_type'      => 'required|string',
+                'occupancy'        => 'required|boolean',
+                'duration'         => 'nullable|integer',
+                'coordinate_x1'    => 'nullable|integer',
+                'coordinate_y1'    => 'nullable|integer',
+                'coordinate_x2'    => 'nullable|integer',
+                'coordinate_y2'    => 'nullable|integer',
+                'license_plate'    => 'nullable|string|max:15',
+                'plate_color'      => 'nullable|string|max:20',
+                'vehicle_type'     => 'nullable|string|max:20',
+                'vehicle_color'    => 'nullable|string|max:20',
+                'vehicle_brand'    => 'nullable|string|max:50',
+                'owner'            => 'nullable|string|max:100',
+                'membership_status'=> 'nullable|in:staff,guest,member',
             ]);
     
             // Find the parking space
@@ -65,15 +75,21 @@ class ParkingEventController extends Controller
     
             // If a vehicle is detected, register it
             if (!empty($validated['license_plate'])) {
-                $vehicle = Vehicle::firstOrCreate(
-                    ['license_plate' => $validated['license_plate']], 
+                $vehicle = Vehicle::updateOrCreate(
+                    ['license_plate' => $validated['license_plate']],  // Find by license_plate
                     [
                         'plate_color'      => $validated['plate_color'] ?? 'Unknown',
+                        'owner'            => $validated['owner'] ?? 'Unknown',
+                        'membership_status'=> $validated['membership_status'] ?? 'guest',
                         'vehicle_type'     => $validated['vehicle_type'] ?? 'Unknown',
                         'vehicle_color'    => $validated['vehicle_color'] ?? 'Unknown',
                         'vehicle_brand'    => $validated['vehicle_brand'] ?? null,
                     ]
                 );
+                
+    
+                // Increment visit count for returning vehicles
+                $vehicle->increment('visit_count');
     
                 // Link vehicle to parking event
                 $parkingEvent->update(['vehicle_id' => $vehicle->id]);
@@ -85,6 +101,7 @@ class ParkingEventController extends Controller
             return self::error("Failed to register parking event!", $e->getMessage(), 500);
         }
     }
+    
 
   
 
