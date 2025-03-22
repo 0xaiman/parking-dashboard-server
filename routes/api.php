@@ -22,5 +22,7 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/parking-events', [ParkingEventController::class, 'store']);
 Route::get('/parking/status', [ParkingSpaceController::class, 'getParkingStatus']);
+Route::patch('/clear-parking-spaces', [ParkingSpaceController::class, 'clearAllParkingSpaces']);
+
 
 

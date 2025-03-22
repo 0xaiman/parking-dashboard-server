@@ -22,6 +22,18 @@ class ParkingSpaceController extends Controller
             return self::error("Failed to retrieve parking status!", $e->getMessage(), 500);
         }
     }
+
+    public function clearAllParkingSpaces()
+{
+    try {
+        // Update all occupied parking spaces to vacant
+        ParkingSpace::where('status', 'occupied')->update(['status' => 'vacant']);
+
+        return ResponseAPI::success("All parking spaces have been reset to vacant.", []);
+    } catch (\Exception $e) {
+        return ResponseAPI::error("Failed to reset parking spaces!", $e->getMessage(), 500);
+    }
+}
     /**
      * Display a listing of the resource.
      */
